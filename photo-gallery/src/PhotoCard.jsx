@@ -6,12 +6,10 @@ const WIDTH = 200;
 
 function PhotoCard({ photo }) {
   const [likes, setLikes] = useState(0);
-  // picsum gives an author; the backup feed only has a title
-  const caption = photo.author ? `Author: ${photo.author}` : `Title: ${photo.title}`;
 
   return (
     <li className="photo-card">
-      <a href={photo.url} target="_blank" rel="noreferrer">
+      <a className="photo-link" href={photo.url} target="_blank" rel="noreferrer">
         <img
           className="photo"
           src={photo.thumbnail}
@@ -21,18 +19,25 @@ function PhotoCard({ photo }) {
           loading="lazy"
         />
       </a>
-      <span className="author">{caption}</span>
-      <button
-        type="button"
-        className="like-button"
-        onClick={() => setLikes((n) => n + 1)}
-        aria-label={`Like, ${likes} ${likes === 1 ? 'like' : 'likes'}`}
-      >
-        <FontAwesomeIcon icon={faThumbsUp} />
-      </button>
-      <span className="like-count" aria-hidden="true">
-        {likes}
-      </span>
+
+      <div className="photo-info">
+        {/* picsum gives an author; the backup feed only has a title */}
+        <p className="author">
+          <span className="author-label">{photo.author ? 'Author: ' : 'Title: '}</span>
+          {photo.author || photo.title}
+        </p>
+        <span className="frame-number">No. {String(photo.number).padStart(4, '0')}</span>
+
+        <button
+          type="button"
+          className={`like-button${likes > 0 ? ' is-liked' : ''}`}
+          onClick={() => setLikes((n) => n + 1)}
+          aria-label={`Like, ${likes} ${likes === 1 ? 'like' : 'likes'}`}
+        >
+          <FontAwesomeIcon icon={faThumbsUp} className="like-icon" />
+          <span className="like-count">{likes}</span>
+        </button>
+      </div>
     </li>
   );
 }

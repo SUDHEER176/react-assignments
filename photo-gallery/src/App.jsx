@@ -49,7 +49,14 @@ export default function App() {
 
   return (
     <main className="gallery">
-      <h1>Photo gallery</h1>
+      <header className="gallery-header">
+        <h1>Photo gallery</h1>
+        <p className="subtitle">
+          {photos.length > 0
+            ? `${photos.length} photos · ${status === 'done' ? 'end of feed' : 'scroll for more'}`
+            : 'Infinite scroll over a paginated feed'}
+        </p>
+      </header>
 
       <ul className="photo-list">
         {photos.map((photo) => (
@@ -63,7 +70,7 @@ export default function App() {
         {status === 'error' && (
           <p>
             Couldn't load photos{' '}
-            <button type="button" onClick={() => setRetry((n) => n + 1)}>
+            <button type="button" className="retry-button" onClick={() => setRetry((n) => n + 1)}>
               Retry
             </button>
           </p>

@@ -1,19 +1,80 @@
+/* Contact-sheet look: warm paper neutrals, ink text, one blue accent for likes */
+:root {
+  --bg: #fbfaf7;
+  --surface: #f3f1ec;
+  --text: #1c1b19;
+  --text-2: #5c5852;
+  --text-3: #8a857c;
+  --line: rgba(28, 27, 25, 0.08);
+  --accent: #1a73e8;
+  --accent-ink: #1559b8;
+  --accent-soft: rgba(26, 115, 232, 0.08);
+
+  --serif: 'Source Serif 4', 'Times New Roman', Times, serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161514;
+    --surface: #211f1d;
+    --text: #ecebe8;
+    --text-2: #aaa69f;
+    --text-3: #7d7972;
+    --line: rgba(236, 235, 232, 0.08);
+    --accent: #8ab4f8;
+    --accent-ink: #8ab4f8;
+    --accent-soft: rgba(138, 180, 248, 0.12);
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: 'Times New Roman', Times, serif;
-  color: #000;
-  background: #fff;
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
 }
 
 .gallery {
-  padding: 16px 24px 48px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+/* header */
+
+.gallery-header {
+  text-align: center;
+  margin-bottom: 32px;
 }
 
 h1 {
-  text-align: center;
-  font-size: 2rem;
-  margin: 16px 0 28px;
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1.2;
 }
+
+.subtitle {
+  margin: 8px 0 0;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* list */
 
 .photo-list {
   list-style: none;
@@ -24,58 +85,186 @@ h1 {
 .photo-card {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
 }
 
-.photo-card a {
+.photo-card:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.photo-link {
   flex-shrink: 0;
+  display: block;
   line-height: 0;
+  border-radius: 8px;
+}
+
+.photo-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .photo {
   display: block;
   width: 200px;
   height: auto;
-  background: #eee;
+  min-height: 112px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(28, 27, 25, 0.08);
+  transition: opacity 0.16s var(--ease);
+}
+
+.photo-link:hover .photo {
+  opacity: 0.9;
+}
+
+.photo-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
 }
 
 .author {
-  font-size: 0.9rem;
+  margin: 0;
+  font-size: 1.0625rem;
+  color: var(--text);
+  overflow-wrap: anywhere;
 }
 
-.like-button {
-  border: 0;
-  padding: 2px;
-  background: none;
-  color: #1a73e8;
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: color 0.12s ease-out, transform 0.12s ease-out;
+.author-label {
+  color: var(--text-3);
 }
 
-.like-button:hover {
-  color: #1558b0;
-}
-
-.like-button:active {
-  transform: scale(0.9);
-}
-
-.like-button:focus-visible {
-  outline: 2px solid #1a73e8;
-  outline-offset: 2px;
-}
-
-.like-count {
-  font-size: 0.9rem;
-  min-width: 1.5em;
+/* signature: the frame number, like on a contact sheet */
+.frame-number {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text-3);
   font-variant-numeric: tabular-nums;
 }
 
+/* like button: thumbs up + count in one small chip */
+
+.like-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  margin-top: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition:
+    background-color 0.16s var(--ease),
+    border-color 0.16s var(--ease),
+    transform 0.12s var(--ease);
+}
+
+.like-icon {
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+.like-count {
+  min-width: 1ch;
+  font-variant-numeric: tabular-nums;
+}
+
+.like-button:hover {
+  background: var(--surface);
+}
+
+.like-button:active {
+  transform: scale(0.96);
+}
+
+.like-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.like-button.is-liked {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent-ink);
+}
+
+/* loading / end / error line under the list */
+
 .status {
+  padding-top: 32px;
+  min-height: 64px;
   text-align: center;
-  color: #555;
-  min-height: 2em;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+
+.status p {
+  margin: 0;
+}
+
+.retry-button {
+  margin-left: 8px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.16s var(--ease);
+}
+
+.retry-button:hover {
+  background: var(--surface);
+}
+
+.retry-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* phones: smaller photo, same row */
+
+@media (max-width: 480px) {
+  .gallery {
+    padding: 32px 16px 48px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .photo-card {
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  .photo {
+    width: 128px;
+    min-height: 72px;
+  }
+
+  .author {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
 }

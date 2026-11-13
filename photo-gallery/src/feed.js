@@ -38,6 +38,7 @@ async function fetchPicsum(page, signal) {
     const thumbHeight = Math.round((400 * p.height) / p.width);
     return {
       id: `picsum-${p.id}`,
+      number: Number(p.id),
       author: p.author,
       url: p.download_url,
       thumbnail: p.download_url.replace(/\/\d+\/\d+$/, `/400/${thumbHeight}`),
@@ -56,6 +57,7 @@ async function fetchBackup(page, signal) {
   );
   return data.photos.map((p) => ({
     id: `backup-${p.id}`,
+    number: p.id,
     author: null,
     title: p.title,
     url: p.url,
