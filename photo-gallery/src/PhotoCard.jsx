@@ -1,42 +1,40 @@
 import { memo, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import LikeButton from './LikeButton.jsx';
+import PhotoMeta from './PhotoMeta.jsx';
 
 const WIDTH = 200;
 
-function PhotoCard({ photo }) {
-  const [likes, setLikes] = useState(0);
+function PhotoCard({ photo, index, likes, onLike, onOpen }) {
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <li className="photo-card">
-      <a className="photo-link" href={photo.url} target="_blank" rel="noreferrer">
+      {/* a real link so ctrl/middle click still opens the original in a new tab */}
+      <a
+        className="photo-link"
+        href={photo.url}
+        target="_blank"
+        rel="noreferrer"
+        onClick={(e) => {
+          if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+          e.preventDefault();
+          onOpen(index);
+        }}
+      >
         <img
-          className="photo"
+          className={`photo${loaded ? ' is-loaded' : ''}`}
           src={photo.thumbnail}
           alt={photo.author || photo.title}
           width={WIDTH}
           height={photo.width ? Math.round((WIDTH * photo.height) / photo.width) : undefined}
           loading="lazy"
+          onLoad={() => setLoaded(true)}
         />
       </a>
 
       <div className="photo-info">
-        {/* picsum gives an author; the backup feed only has a title */}
-        <p className="author">
-          <span className="author-label">{photo.author ? 'Author: ' : 'Title: '}</span>
-          {photo.author || photo.title}
-        </p>
-        <span className="frame-number">No. {String(photo.number).padStart(4, '0')}</span>
-
-        <button
-          type="button"
-          className={`like-button${likes > 0 ? ' is-liked' : ''}`}
-          onClick={() => setLikes((n) => n + 1)}
-          aria-label={`Like, ${likes} ${likes === 1 ? 'like' : 'likes'}`}
-        >
-          <FontAwesomeIcon icon={faThumbsUp} className="like-icon" />
-          <span className="like-count">{likes}</span>
-        </button>
+        <PhotoMeta photo={photo} />
+        <LikeButton id={photo.id} count={likes} onLike={onLike} />
       </div>
     </li>
   );
