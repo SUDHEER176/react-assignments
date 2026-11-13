@@ -1,0 +1,81 @@
+body {
+  margin: 0;
+  font-family: 'Times New Roman', Times, serif;
+  color: #000;
+  background: #fff;
+}
+
+.gallery {
+  padding: 16px 24px 48px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin: 16px 0 28px;
+}
+
+.photo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.photo-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.photo-card a {
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.photo {
+  display: block;
+  width: 200px;
+  height: auto;
+  background: #eee;
+}
+
+.author {
+  font-size: 0.9rem;
+}
+
+.like-button {
+  border: 0;
+  padding: 2px;
+  background: none;
+  color: #1a73e8;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.12s ease-out, transform 0.12s ease-out;
+}
+
+.like-button:hover {
+  color: #1558b0;
+}
+
+.like-button:active {
+  transform: scale(0.9);
+}
+
+.like-button:focus-visible {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.like-count {
+  font-size: 0.9rem;
+  min-width: 1.5em;
+  font-variant-numeric: tabular-nums;
+}
+
+.status {
+  text-align: center;
+  color: #555;
+  min-height: 2em;
+}
